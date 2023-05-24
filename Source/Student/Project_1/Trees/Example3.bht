@@ -1,5 +1,0 @@
-TREENAME(Example3)
-TREENODE(C_ParallelSequencer, 0)
-TREENODE(L_AlgorithmPosition, 1)
-TREENODE(L_FormD, 1)
-TREENODE(K_ColorChange, 1)

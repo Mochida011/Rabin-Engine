@@ -22,7 +22,7 @@ void L_FormV::on_enter()
     //    f = false;
     //}
 
-
+    agents->get_all_agents_by_type("DVDAgent")[0]->set_movement_speed(11);
     BehaviorNode::on_leaf_enter();
 
 
@@ -47,6 +47,7 @@ void L_FormV::on_update(float dt)
 {
     // grab the current mouse pos
     const auto& mousePos = InputHandler::get_mouse_position();
+    agents->get_all_agents_by_type("DVDAgent")[0]->set_movement_speed(11);
     auto agentPos = (BehaviorAgent*)agents->get_all_agents_by_type("DVDAgent")[0];
     auto agentGrid = agentPos->get_blackboard().get_value<GridPos>("targetPos");
     //errain->get_grid_position(agents->get_all_agents_by_type("DVDAgent")[0]->get_position());
@@ -54,7 +55,7 @@ void L_FormV::on_update(float dt)
     GridPos grid;
     grid.col = agentGrid.col;
     grid.row = agentGrid.row;
-    agentPos->set_movement_speed(9);
+    agentPos->set_movement_speed(11);
     agentPos->set_scaling(2);
     Position = terrain->get_world_position(grid);
     // we want to know where on the ground the mouse was clicked
@@ -85,19 +86,19 @@ void L_FormV::on_update(float dt)
 
     for (int i = 0; i < agents->get_all_agents_by_type("V").size(); i++) {
         agents->get_all_agents_by_type("V")[i]->set_scaling(2);
-        agents->get_all_agents_by_type("V")[i]->set_movement_speed(2.2);
+        agents->get_all_agents_by_type("V")[i]->set_movement_speed(3.2);
         BehaviorAgent* temp = (BehaviorAgent*)agents->get_all_agents_by_type("V")[i];
 
         if (i < 1) { 
             grid.col++;
             Position2 = terrain->get_world_position(grid);
-            std::cout << "col" << grid.col << "row" << grid.row << std::endl;
+            //std::cout << "col" << grid.col << "row" << grid.row << std::endl;
             temp->move_toward_point(Position2, fixedDt);
             grid.col--;
         }
         else if (i < 4) {
             grid.row++;
-            std::cout << "col" << grid.col << "row" << grid.row << std::endl;
+            //std::cout << "col" << grid.col << "row" << grid.row << std::endl;
             Position2 = terrain->get_world_position(grid);
             temp->move_toward_point(Position2, fixedDt);
             
@@ -108,7 +109,7 @@ void L_FormV::on_update(float dt)
            if (i < 7) {
              
               grid.row= grid.row+i-3;
-              std::cout << "col" << grid.col << "row" << grid.row << std::endl;
+              //std::cout << "col" << grid.col << "row" << grid.row << std::endl;
               Position2 = terrain->get_world_position(grid);
               temp->move_toward_point(Position2, fixedDt);
            }

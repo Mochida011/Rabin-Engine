@@ -1,7 +1,8 @@
 #include <pch.h>
 #include "L_ColorChange.h"
+#include "L_AgentW.h"
 #include "../Agent/BehaviorAgent.h"
-
+bool stop; 
 void K_ColorChange::on_enter()
 {
 
@@ -38,7 +39,7 @@ void K_ColorChange::on_enter()
     //display_leaf_text();
 }
 void K_ColorChange::on_update(float dt) {
-
+   
     if (check == 1) {
         if (m_color.x >= 0.04f && m_color.z == 0.04f && m_color.y <=1.0f ) {
 
@@ -72,7 +73,20 @@ void K_ColorChange::on_update(float dt) {
     }
     //std::cout << m_color.x<<"," << m_color.y << "," << m_color.z<<"update" << std::endl;
 
-    agent->set_color(2*(m_color));
+    //if (agent->get_blackboard().get_value<int>("color")==0) {
+        
+    //}
+    //else {
+    //    
+    //}
+    if (stop) {
+        
+    }
+    else {
+        agent->set_color(4*(m_color));
+    }
+   
+
     display_leaf_text();
 
 }

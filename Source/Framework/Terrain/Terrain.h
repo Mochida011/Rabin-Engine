@@ -55,7 +55,7 @@ public:
     const DirectX::SimpleMath::Plane &get_terrain_plane() const;
 
     static const size_t maxMapHeight = 40;
-    static const size_t maxMapWidth = 40;
+    static const size_t maxMapWidth = 50;
 
     static const float mapSizeInWorld;
 

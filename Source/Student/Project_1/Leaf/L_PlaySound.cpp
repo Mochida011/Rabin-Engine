@@ -3,7 +3,10 @@
 
 void L_PlaySound::on_enter()
 {
-	audioManager->PlaySoundEffect(L"Assets\\Audio\\retro.wav");
+	
+	audioManager->SetVolume(0.2f);
+	audioManager->PlaySoundEffect(L"Assets\\Audio\\boing.wav");
+
 	BehaviorNode::on_leaf_enter();
 	on_success();
 }

@@ -8,32 +8,20 @@
 void L_CollisionWall::on_update(float dt)
 {
     // grab the current mouse pos
-    const auto& mousePos = InputHandler::get_mouse_position();
-    GridPos grid;
-    grid.col = 10;
-    grid.row = 10;
-
-    
-    Position = terrain->get_world_position(grid);
-    // we want to know where on the ground the mouse was clicked
-    const auto& plane = terrain->get_terrain_plane();
-    grid.col = 0; grid.row = 20;
-    const auto& positionCornerBL = terrain->get_world_position(grid);
-    grid.row = 0; 
-    const auto& positionCornerTL = terrain->get_world_position(grid);
-
-    grid.col = 20; grid.row = 20;
-    const auto& positionCornerBR = terrain->get_world_position(grid);
-    grid.row = 0;
-    const auto& positionCornerTR = terrain->get_world_position(grid);
-    
-    if (AABB(agent->get_position(),positionCornerTL,positionCornerTR, positionCornerBR,positionCornerBL)) {
-        on_success();
+    BehaviorAgent* temp = (BehaviorAgent*)agents->get_all_agents_by_type("DVDAgent")[0];
+    if (temp->get_blackboard().get_value<Vec3>("posPos") != Position) {
+        
+        std::cout << Position.x << std::endl;
+        //std::cout << "heh" << std::endl;
+        Position = temp->get_blackboard().get_value<Vec3>("posPos");
+       on_failure();
     }
     else {
-        on_failure();
+        on_success();
+
+        //std::cout << "heh2" << std::endl;
     }
-   
+
     //// find out where on the plane the click happened
     //const auto worldPos = renderer->screen_to_world(mousePos.x, mousePos.y, plane);
     //const auto pos = renderer->screen_to_world((int)Position.x, (int)Position.y, plane);
