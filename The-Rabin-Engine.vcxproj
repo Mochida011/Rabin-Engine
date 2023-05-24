@@ -255,7 +255,12 @@
     <ClInclude Include="Source\Student\Project_1\Decorator\D_Delay.h" />
     <ClInclude Include="Source\Student\Project_1\Decorator\D_InvertedRepeater.h" />
     <ClInclude Include="Source\Student\Project_1\Decorator\D_RepeatFourTimes.h" />
+    <ClInclude Include="Source\Student\Project_1\Leaf\L_AlgorithmPosition.h" />
     <ClInclude Include="Source\Student\Project_1\Leaf\L_CheckMouseClick.h" />
+    <ClInclude Include="Source\Student\Project_1\Leaf\L_CollisionWall.h" />
+    <ClInclude Include="Source\Student\Project_1\Leaf\L_ColorChange.h" />
+    <ClInclude Include="Source\Student\Project_1\Leaf\L_FormD.h" />
+    <ClInclude Include="Source\Student\Project_1\Leaf\L_FormV.h" />
     <ClInclude Include="Source\Student\Project_1\Leaf\L_Idle.h" />
     <ClInclude Include="Source\Student\Project_1\Leaf\L_MoveToFurthestAgent.h" />
     <ClInclude Include="Source\Student\Project_1\Leaf\L_MoveToMouseClick.h" />
@@ -335,7 +340,12 @@
     <ClCompile Include="Source\Student\Project_1\Decorator\D_Delay.cpp" />
     <ClCompile Include="Source\Student\Project_1\Decorator\D_InvertedRepeater.cpp" />
     <ClCompile Include="Source\Student\Project_1\Decorator\D_RepeatFourTimes.cpp" />
+    <ClCompile Include="Source\Student\Project_1\Leaf\L_AlgorithmPosition.cpp" />
     <ClCompile Include="Source\Student\Project_1\Leaf\L_CheckMouseClick.cpp" />
+    <ClCompile Include="Source\Student\Project_1\Leaf\L_CollisionWall.cpp" />
+    <ClCompile Include="Source\Student\Project_1\Leaf\L_ColorChange.cpp" />
+    <ClCompile Include="Source\Student\Project_1\Leaf\L_FormD.cpp" />
+    <ClCompile Include="Source\Student\Project_1\Leaf\L_FormV.cpp" />
     <ClCompile Include="Source\Student\Project_1\Leaf\L_Idle.cpp" />
     <ClCompile Include="Source\Student\Project_1\Leaf\L_MoveToFurthestAgent.cpp" />
     <ClCompile Include="Source\Student\Project_1\Leaf\L_MoveToMouseClick.cpp" />

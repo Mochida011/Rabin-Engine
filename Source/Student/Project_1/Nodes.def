@@ -13,3 +13,10 @@ REGISTER_LEAF(L_MoveToFurthestAgent, "L_MoveToFurthestAgent")
 REGISTER_LEAF(L_MoveToMouseClick, "L_MoveToMouseClick")
 REGISTER_LEAF(L_MoveToRandomPosition, "L_MoveToRandomPosition")
 REGISTER_LEAF(L_PlaySound, "L_PlaySound")
+
+
+REGISTER_LEAF(K_ColorChange, "K_ColorChange")
+REGISTER_LEAF(L_AlgorithmPosition, "L_AlgorithmPosition")
+REGISTER_LEAF(L_FormD, "L_FormD")
+REGISTER_LEAF(L_CollisionWall, "L_CollisionWall")
+REGISTER_LEAF(L_FormV, "L_FormV")

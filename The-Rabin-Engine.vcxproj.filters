@@ -322,6 +322,21 @@
     <ClInclude Include="Source\Framework\Core\AudioManager.h">
       <Filter>Source\Framework\Core</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Student\Project_1\Leaf\L_ColorChange.h">
+      <Filter>Source\Student\Project_1\Leaf</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Student\Project_1\Leaf\L_AlgorithmPosition.h">
+      <Filter>Source\Student\Project_1\Leaf</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Student\Project_1\Leaf\L_FormD.h">
+      <Filter>Source\Student\Project_1\Leaf</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Student\Project_1\Leaf\L_CollisionWall.h">
+      <Filter>Source\Student\Project_1\Leaf</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Student\Project_1\Leaf\L_FormV.h">
+      <Filter>Source\Student\Project_1\Leaf</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Framework\Main.cpp">
@@ -545,6 +560,21 @@
     </ClCompile>
     <ClCompile Include="Source\Framework\Core\AudioManager.cpp">
       <Filter>Source\Framework\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Student\Project_1\Leaf\L_ColorChange.cpp">
+      <Filter>Source\Student\Project_1\Leaf</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Student\Project_1\Leaf\L_AlgorithmPosition.cpp">
+      <Filter>Source\Student\Project_1\Leaf</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Student\Project_1\Leaf\L_FormD.cpp">
+      <Filter>Source\Student\Project_1\Leaf</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Student\Project_1\Leaf\L_CollisionWall.cpp">
+      <Filter>Source\Student\Project_1\Leaf</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Student\Project_1\Leaf\L_FormV.cpp">
+      <Filter>Source\Student\Project_1\Leaf</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -28,3 +28,9 @@
 #include "Leaf/L_PlaySound.h"
 
 // Student Leaf Nodes
+
+#include "Leaf/L_ColorChange.h"
+#include "Leaf/L_AlgorithmPosition.h"
+#include "Leaf/L_FormD.h"
+#include "Leaf/L_FormV.h"
+#include "Leaf/L_CollisionWall.h"

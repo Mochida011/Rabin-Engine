@@ -16,7 +16,7 @@ void L_MoveToFurthestAgent::on_enter()
 
     // and our agent's position
     const auto &currPos = agent->get_position();
-
+   
     for (const auto & a : allAgents)
     {
         // make sure it's not our agent
@@ -24,7 +24,7 @@ void L_MoveToFurthestAgent::on_enter()
         {
             const auto &agentPos = a->get_position();
             const float distance = Vec3::Distance(currPos, agentPos);
-
+            
             if (distance > longestDistance)
             {
                 longestDistance = distance;

@@ -1,0 +1,5 @@
+TREENAME(Example33)
+TREENODE(C_ParallelSequencer, 0)
+TREENODE(K_ColorChange, 1)
+TREENODE(D_InvertedRepeater, 1)
+TREENODE(L_AlgorithmPosition, 2)

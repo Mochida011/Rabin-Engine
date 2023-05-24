@@ -1,2 +1,6 @@
 #include "../Source/Student/Project_1/Trees/Example.bht"
+#include "../Source/Student/Project_1/Trees/Example1.bht"
+#include "../Source/Student/Project_1/Trees/Example3.bht"
+#include "../Source/Student/Project_1/Trees/Example33.bht"
+#include "../Source/Student/Project_1/Trees/ExampleV.bht"
 #include "../Source/Student/Project_1/Trees/Idle.bht"

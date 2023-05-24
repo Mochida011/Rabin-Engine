@@ -5,8 +5,21 @@
 void ProjectOne::setup()
 {
     // Create your inital agents
-    agents->create_behavior_agent("ExampleAgent", BehaviorTreeTypes::Example);
+    agents->create_behavior_agent("ExampleAgenteg1", BehaviorTreeTypes::Example);
+    agents->create_behavior_agent("DVDAgent", BehaviorTreeTypes::Example33);
 
+    
+    for (int i = 0; i < 5; i ++) {
+        agents->create_behavior_agent("D", BehaviorTreeTypes::Example3);
+    }
+    
+    for (int i = 0; i < 7; i++) {
+        agents->create_behavior_agent("DC", BehaviorTreeTypes::Example3);
+    }
+
+    for (int i = 0; i < 7; i++) {
+        agents->create_behavior_agent("V", BehaviorTreeTypes::ExampleV);
+    }
     // you can technically load any map you want, even create your own map file,
     // but behavior agents won't actually avoid walls or anything special, unless you code that yourself
     // that's the realm of project 2 though
@@ -16,6 +29,7 @@ void ProjectOne::setup()
     // works best with map 0, the completely blank map
     terrain->pathLayer.set_enabled(true);
     terrain->pathLayer.set_value(0, 0, Colors::Red);
+    
 
     // camera position can be modified from this default as well
     auto camera = agents->get_camera_agent();
@@ -25,7 +39,7 @@ void ProjectOne::setup()
     audioManager->SetVolume(0.5f);
     audioManager->PlaySoundEffect(L"Assets\\Audio\\retro.wav");
     // uncomment for example on playing music in the engine (must be .wav)
-    // audioManager->PlayMusic(L"Assets\\Audio\\motivate.wav");
+    audioManager->PlayMusic(L"Assets\\Audio\\motivate.wav");
     // audioManager->PauseMusic(...);
     // audioManager->ResumeMusic(...);
     // audioManager->StopMusic(...);
