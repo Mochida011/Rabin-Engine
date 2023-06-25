@@ -11,7 +11,7 @@ void L_CollisionWall::on_update(float dt)
     BehaviorAgent* temp = (BehaviorAgent*)agents->get_all_agents_by_type("DVDAgent")[0];
     if (temp->get_blackboard().get_value<Vec3>("posPos") != Position) {
         
-        std::cout << Position.x << std::endl;
+        //std::cout << Position.x << std::endl;
         //std::cout << "heh" << std::endl;
         Position = temp->get_blackboard().get_value<Vec3>("posPos");
        on_failure();

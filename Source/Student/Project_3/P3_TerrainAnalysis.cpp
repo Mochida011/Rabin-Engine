@@ -21,10 +21,53 @@ float distance_to_closest_wall(int row, int col)
         functions in the global terrain to determine if a cell is within map bounds
         and a wall, respectively.
     */
+    //float givenDistance = sqrt((float)(row * row + col * col));
+    float minDistance = FLT_MAX;
+    for (int i = 0; i < terrain->get_map_height(); i ++) {
+
+        for (int j = 0; j < terrain->get_map_width(); j ++) {
+
+
+            if (terrain->is_valid_grid_position(i, j)&&(terrain->is_wall(i, j))) {
+                float distance = sqrt(float((j - col)*(j - col))+float((i - row)*(i - row)));
+                minDistance = distance<minDistance?distance:minDistance;
+
+            }
+            else if (terrain->is_valid_grid_position(i,j)&&(i == 0 || j == 0||j==terrain->get_map_height()-1||i ==terrain->get_map_width()-1)) {
+                if (i==0) {
+                    float distance = sqrt(float((j - col) * (j - col)) + float((i - 1 - row) * (i - 1 - row)));
+                    minDistance = distance < minDistance ? distance : minDistance;
+
+                }
+                else if (j==0) {
+                    float distance = sqrt(float((j - 1 - col) * (j - 1 - col)) + float((i -  row) * (i -  row)));
+                    minDistance = distance < minDistance ? distance : minDistance;
+                }
+                else if (j==terrain->get_map_width()-1) {
+                    float distance = sqrt(float((j + 1 - col) * (j + 1 - col)) + float((i - row) * (i - row)));
+                    minDistance = distance < minDistance ? distance : minDistance;
+                }
+                else if (i==terrain->get_map_height()-1) {
+                    float distance = sqrt(float((j - col) * (j - col)) + float((i + 1 - row) * (i + 1 - row)));
+                    minDistance = distance < minDistance ? distance : minDistance;
+
+                }
+            }
+
+        }
+    }
+    //euclidean distance offset from given cell to wall cell 
+    //sqrt (A^2+B^2)
+
+
+    //return smallest distance 
+
+    //use valid grid position, is wall member in global terrain to
+    //determine if cell is within map bounds and wall
+
 
     // WRITE YOUR CODE HERE
-    
-    return 0.0f; // REPLACE THIS
+    return minDistance; // REPLACE THIS
 }
 
 bool is_clear_path(int row0, int col0, int row1, int col1)
@@ -38,9 +81,37 @@ bool is_clear_path(int row0, int col0, int row1, int col1)
         function in the global terrain to determine if a cell is a wall or not.
     */
 
+    //Two cells(row0, col0) and (row1, col1) are visible to each other
+
+    
+    //std::cout << centerpointx << std::endl;
+    int minrow, mincol, maxrow, maxcol;
+    minrow = std::min(row0,row1);
+    mincol = std::min(col0,col1);
+    maxrow = std::max(row0,row1);
+    maxcol = std::max(col0,col1);
+    for (int i = minrow; i <= maxrow; i ++) {
+        for (int j = mincol; j <= maxcol; j ++) {
+            //Vec3 currentposition = terrain->get_world_position(i,j);
+
+            if (terrain->is_wall(i,j)) {
+                float maxx = (float)j + 0.501f;
+                float maxy = (float)i + 0.501f;
+                float minx = (float)j - 0.501f;
+                float miny = (float)i - 0.501f;
+                if (line_intersect(Vec2((float)col0, (float)row0), Vec2((float)col1, (float)row1), Vec2(minx, miny), Vec2(maxx, miny)) || 
+                    line_intersect(Vec2((float)col0, (float)row0), Vec2((float)col1, (float)row1), Vec2(minx, miny), Vec2(minx, maxy)) ||
+                    line_intersect(Vec2((float)col0, (float)row0), Vec2((float)col1, (float)row1), Vec2(minx, maxy), Vec2(maxx, maxy)) ||
+                    line_intersect(Vec2((float)col0, (float)row0), Vec2((float)col1, (float)row1), Vec2(maxx, maxy), Vec2(maxx, miny))) 
+                    return false;
+                
+            }
+        }
+    }
+
     // WRITE YOUR CODE HERE
 
-    return false; // REPLACE THIS
+    return true; // REPLACE THIS
 }
 
 void analyze_openness(MapLayer<float> &layer)
@@ -50,6 +121,19 @@ void analyze_openness(MapLayer<float> &layer)
         where d is the distance to the closest wall or edge.  Make use of the
         distance_to_closest_wall helper function.  Walls should not be marked.
     */
+
+    for (int i = 0; i < terrain->get_map_height(); i ++) {
+        for (int j = 0; j < terrain->get_map_width(); j ++) {
+            GridPos Temp{ i, j };
+            if (distance_to_closest_wall(i, j)!=FLT_MAX&&!terrain->is_wall(i,j)) {
+                float markValue = 1.f;              
+                markValue = 1.f / ((float)(distance_to_closest_wall(i, j) * distance_to_closest_wall(i, j)));
+
+                layer.set_value(Temp, markValue);
+                
+            }
+        }
+    }
 
     // WRITE YOUR CODE HERE
 }
@@ -66,6 +150,27 @@ void analyze_visibility(MapLayer<float> &layer)
         helper function.
     */
 
+
+    for (int i = 0; i < terrain->get_map_height(); i ++) {
+        for (int j = 0; j < terrain->get_map_width(); j ++) {
+            if (!terrain->is_wall(i,j)) {
+                int visiblecount = 0;
+                for (int k = 0; k < terrain->get_map_height(); k++) {
+                    for (int l = 0; l < terrain->get_map_width(); l++) {
+                        if (is_clear_path(i,j,k,l)&&!terrain->is_wall(k,l)) {
+                            visiblecount++;
+                        }
+                    }
+                }
+
+                float magic = visiblecount / 160.f;
+                magic = magic > 1.0f ? 1.0f : magic;
+                layer.set_value(i,j,magic);
+
+            }
+        }
+    }
+
     // WRITE YOUR CODE HERE
 }
 
@@ -80,6 +185,77 @@ void analyze_visible_to_cell(MapLayer<float> &layer, int row, int col)
         intersect the four boundary lines of every wall cell.  Make use of the is_clear_path
         helper function.
     */
+
+   
+    for (int i = 0; i < terrain->get_map_height(); i ++) {
+        for (int j = 0; j < terrain->get_map_width(); j ++) {
+            GridPos Temp{ i,j };
+
+            if (!terrain->is_wall(i, j)) {
+                if (is_clear_path(row, col, i, j)) {
+
+                    layer.set_value(Temp, 1.f);
+                }
+                else {
+                    layer.set_value(Temp, 0.f);
+                }
+            }
+        }
+    }
+
+    for (int i = 0; i < terrain->get_map_height(); i ++) {
+        for (int j = 0; j < terrain->get_map_width(); j ++) {
+            if (layer.get_value(i,j)==0.f&&!terrain->is_wall(i,j)) {
+                if (i!=terrain->get_map_height() - 1) {
+                    if (layer.get_value(i+1,j)==1.f&& !terrain->is_wall(i+1, j)) {
+                        layer.set_value(i,j,0.5f);
+                    }
+                }
+                if (j!=terrain->get_map_width()-1) {
+                    if (layer.get_value(i,j+1)==1.f&& !terrain->is_wall(i, j+1)) {
+                        layer.set_value(i,j,0.5);
+                    }
+                }
+                if (i!=0) {
+                    if (layer.get_value(i-1,j) ==1.f&& !terrain->is_wall(i-1, j)) {
+                        layer.set_value(i, j, 0.5);
+                    }
+                }
+                if (j!=0) {
+                    if (layer.get_value(i, j-1) ==1.f&&!terrain->is_wall(i, j-1)) {
+                        layer.set_value(i , j, 0.5);
+                    }
+                }
+                if (j != 0&& i != 0) {
+                    if (layer.get_value(i-1, j - 1)==1.f&& !terrain->is_wall(i-1, j-1)&&
+                        !terrain->is_wall(i-1,j)&&!terrain->is_wall(i,j-1)) {
+                        layer.set_value(i, j, 0.5f);
+                    }
+
+                }
+                if (j != terrain->get_map_width() - 1 && i != terrain->get_map_height() - 1) {
+                    if (layer.get_value(i + 1, j + 1)==1.f&& !terrain->is_wall(i+1, j+1) && !terrain->is_wall(i+1,j)&&
+                        !terrain->is_wall(i,j+1)) {
+                        layer.set_value(i , j , 0.5f);
+                    }
+                }
+                if (j != 0 && i != terrain->get_map_height() - 1) {
+                    if (layer.get_value(i + 1, j - 1) == 1.f && !terrain->is_wall(i + 1, j - 1)&&
+                        !terrain->is_wall(i,j-1)&&
+                        !terrain->is_wall(i+1,j)) {
+                        layer.set_value(i, j, 0.5f);
+                    }
+                }
+                if (j != terrain->get_map_width() - 1 && i != 0) {
+                    if (layer.get_value(i - 1, j + 1) == 1.f && !terrain->is_wall(i - 1, j + 1)&&
+                        !terrain->is_wall(i-1,j)&&!terrain->is_wall(i,j+1)) {
+                        layer.set_value(i, j, 0.5f);
+                    }
+                }
+
+            }
+        }
+    }
 
     // WRITE YOUR CODE HERE
 }
@@ -103,7 +279,30 @@ void analyze_agent_vision(MapLayer<float> &layer, const Agent *agent)
         intersect the four boundary lines of every wall cell.  Make use of the is_clear_path
         helper function.
     */
+    
+    Vec3 viewvector = agent->get_forward_vector();
+    viewvector.Normalize();
+    float FOV = cos(float((95.f * M_PI) / 180.f));
+    
+    for (int i = 0; i < terrain->get_map_height(); i++) {
+        for (int j = 0; j < terrain->get_map_width(); j++) {
+            int col = terrain->get_grid_position(agent->get_position()).col;
+            int row = terrain->get_grid_position(agent->get_position()).row;
+            if (is_clear_path(row,col,i,j)&&!terrain->is_wall(i,j)) {
+                
+                Vec2 Product{ viewvector.x,viewvector.z };
+                Vec3 movingVec = terrain->get_world_position(i,j)- agent->get_position();
+                movingVec.Normalize();
+                
+                float prod = Product.Dot(Vec2(movingVec.x,movingVec.z));
+                if (prod >FOV)
+                    layer.set_value(i, j, 1.f);
 
+            }
+            
+        }
+
+    }
     // WRITE YOUR CODE HERE
 }
 
@@ -122,10 +321,86 @@ void propagate_solo_occupancy(MapLayer<float> &layer, float decay, float growth)
         After every cell has been processed into the temporary layer, write the temporary layer into
         the given layer;
     */
+    float temp[40][40]{ 0.f };
+    for (int i = 0; i < terrain->get_map_height(); i ++) {
+        for (int j = 0; j < terrain->get_map_width(); j++) {
+            float highestValue = -FLT_MIN; 
+            if (!terrain->is_wall(i, j)) {
+                if (i != terrain->get_map_height() - 1) {    
+                    if (!terrain->is_wall(i + 1, j)) {
+                        
+                        float newInfluence = layer.get_value(i + 1, j) * exp(-1 * 1 * decay);
+                        highestValue = std::max(highestValue, newInfluence);  
+                    }
+
+                }
+                if (j != terrain->get_map_width() - 1) {
+                    if (!terrain->is_wall(i, j + 1)) {
+
+                        float newInfluence = layer.get_value(i , j+1) * exp(-1 * 1 * decay);
+                        highestValue = std::max(highestValue, newInfluence);
+                    }
+
+                }
+                if (i != 0) {
+                    if (!terrain->is_wall(i - 1, j)) {
+
+                        float newInfluence = layer.get_value(i-1, j ) * exp(-1 * 1 * decay);
+                        highestValue = std::max(highestValue, newInfluence);
+                       
+                    }
+                }
+                if (j != 0) {
+                    if ( !terrain->is_wall(i, j - 1)) {
+                        float newInfluence = layer.get_value(i, j-1) * exp(-1 * 1 * decay);
+                        highestValue = std::max(highestValue, newInfluence);
+                    }
+                }
+                if (j != 0 && i != 0) {
+                    if (!terrain->is_wall(i - 1, j - 1) &&
+                        !terrain->is_wall(i - 1, j) && !terrain->is_wall(i, j - 1)) {
+                        float newInfluence = layer.get_value(i - 1, j-1) * exp(-1 * sqrt(2.f) * decay);
+                        highestValue = std::max(highestValue, newInfluence);
+                    }
+
+                }
+                if (j != terrain->get_map_width() - 1 && i != terrain->get_map_height() - 1) {
+                    if (!terrain->is_wall(i + 1, j + 1) && !terrain->is_wall(i + 1, j) &&
+                        !terrain->is_wall(i, j + 1)) {
+                        float newInfluence = layer.get_value(i +1, j+1) * exp(-1 * sqrt(2.f) * decay);
+                        highestValue = std::max(highestValue, newInfluence);
+                    }
+                }
+                if (j != 0 && i != terrain->get_map_height() - 1) {
+                    if (!terrain->is_wall(i + 1, j - 1) &&
+                        !terrain->is_wall(i, j - 1) &&
+                        !terrain->is_wall(i + 1, j)) {
+                        float newInfluence = (float)(layer.get_value(i +1, j-1) * exp(-1 * sqrt(2) * decay));
+                        highestValue = std::max(highestValue, newInfluence);
+                    }       
+                }
+                if (j != terrain->get_map_width() - 1 && i != 0) {
+                    if (!terrain->is_wall(i - 1, j + 1) &&
+                        !terrain->is_wall(i - 1, j) && !terrain->is_wall(i, j + 1)) {
+                        float newInfluence = (float)(layer.get_value(i - 1, j+1) * exp(-1 * sqrt(2) * decay));
+                        highestValue = std::max(highestValue, newInfluence);
+                    }
+                }
+
+            }
+            temp[i][j]=lerp(layer.get_value(i,j), highestValue, growth);
+        }
+    }
+    for (int i = 0; i < terrain->get_map_height(); i ++) {
+        for (int j = 0; j < terrain->get_map_width(); j++) {
+            layer.set_value(i,j,temp[i][j]);
+        }
+    }
     
     // WRITE YOUR CODE HERE
 }
 
+//no need
 void propagate_dual_occupancy(MapLayer<float> &layer, float decay, float growth)
 {
     /*
@@ -154,6 +429,22 @@ void normalize_solo_occupancy(MapLayer<float> &layer)
         for every cell in the layer by that amount.  This will keep the values in the
         range of [0, 1].  Negative values should be left unmodified.
     */
+    float highestvalue=-FLT_MIN; 
+    for (int i = 0; i < terrain->get_map_height(); i ++) {
+        for (int j = 0; j < terrain->get_map_width(); j ++) {
+            highestvalue = std::max(highestvalue, layer.get_value(i,j));
+        }
+    }
+    for (int i = 0; i < terrain->get_map_height(); i++) {
+        for (int j = 0; j < terrain->get_map_width(); j++) {
+            if (layer.get_value(i,j)>0) {
+                layer.set_value(i, j, layer.get_value(i, j) / highestvalue);
+            }
+            
+        }
+    }
+
+
 
     // WRITE YOUR CODE HERE
 }
@@ -188,6 +479,49 @@ void enemy_field_of_view(MapLayer<float> &layer, float fovAngle, float closeDist
         This creates a radius around the enemy that the player can be detected within, as well
         as a fov cone.
     */
+
+    // clear out old values setting any negative value to 0
+    for (int i = 0; i < terrain->get_map_height(); i ++) {
+        for (int j = 0; j < terrain->get_map_width(); j ++) {
+            if (layer.get_value(i,j)<0)
+                layer.set_value(i,j,0);
+        }
+    }
+
+    Vec3 viewvector = enemy->get_forward_vector();
+    viewvector.Normalize();
+    
+    float FOV = cos(float(((fovAngle / 2) * M_PI) / 180.f));
+
+    //for every cell in field cone mark with occupancy value
+    for (int i = 0; i < terrain->get_map_height(); i++) {
+        for (int j = 0; j < terrain->get_map_width(); j++) {
+            int col = terrain->get_grid_position(enemy->get_position()).col;
+            int row = terrain->get_grid_position(enemy->get_position()).row;
+            //if distance betweeen enemy and player is less than close distance, check for clear path and apply occupancy value
+            if (Vec3::Distance(terrain->get_world_position(i, j), enemy->get_position()) < closeDistance) {
+                GridPos enemypos =terrain->get_grid_position(enemy->get_position());
+                if (is_clear_path(enemypos.row, enemypos.col, i,j)&&!terrain->is_wall(i,j))
+                    layer.set_value(i, j, occupancyValue);
+
+            }
+            //else check for if it is within cone
+            if (is_clear_path(row, col, i, j) && !terrain->is_wall(i, j)) {
+
+                Vec2 Product{ viewvector.x,viewvector.z };
+                Vec3 movingVec = terrain->get_world_position(i, j) - enemy->get_position();
+                movingVec.Normalize();
+
+                float prod = Product.Dot(Vec2(movingVec.x, movingVec.z));
+                if (prod > FOV)
+                    layer.set_value(i, j, occupancyValue);
+
+
+            }
+
+        }
+
+    }
 
     // WRITE YOUR CODE HERE
 }
@@ -228,6 +562,19 @@ bool enemy_seek_player(MapLayer<float> &layer, AStarAgent *enemy)
 
         Return whether a target cell was found.
     */
+    float highestvalue = -FLT_MIN; 
+    int highrow, highcol;
+    highrow = highcol = 0;
+    for (int i = 0; i < terrain->get_map_height(); i ++) {
+        for (int j = 0; j < terrain->get_map_width(); j++) {
+            if (highestvalue<layer.get_value(i,j)) {
+                highestvalue = layer.get_value(i, j);
+                highrow = i; highcol = j;
+            }
+
+        }
+    }
+    enemy->path_to(terrain->get_world_position(highrow,highcol));
 
     // WRITE YOUR CODE HERE
 

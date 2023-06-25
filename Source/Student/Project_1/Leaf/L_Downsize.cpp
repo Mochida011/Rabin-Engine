@@ -9,7 +9,7 @@ void L_Downsize::on_enter()
 		float scale = agent->get_scaling().x;
 		scale -= 1.f;
 		agent->set_scaling(scale);
-		std::cout << "shrink" << std::endl;
+		//std::cout << "shrink" << std::endl;
 	}
 	BehaviorNode::on_leaf_enter();
 	on_success();

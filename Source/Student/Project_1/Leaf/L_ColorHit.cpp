@@ -19,7 +19,7 @@ void L_ColorHit::on_update(float dt) {
     }
 
     on_success();
-    std::cout << "done" << std::endl;
+    //std::cout << "done" << std::endl;
     display_leaf_text();
 
 }
